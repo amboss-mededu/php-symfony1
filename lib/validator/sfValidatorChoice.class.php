@@ -162,6 +162,10 @@ class sfValidatorChoice extends sfValidatorBase
    */
   static protected function inChoices($value, array $choices = array())
   {
+    if (is_array($value) && 1 === count($value)) {
+      $value = reset($value);
+    }
+    
     foreach ($choices as $choice)
     {
       if ((string) $choice == (string) $value)
