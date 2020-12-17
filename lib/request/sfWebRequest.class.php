@@ -75,7 +75,14 @@ class sfWebRequest extends sfRequest
     parent::initialize($dispatcher, $parameters, $attributes, $options);
 
     // GET parameters
-    $this->getParameters = get_magic_quotes_gpc() ? sfToolkit::stripslashesDeep($_GET) : $_GET;
+    if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc())
+    {
+      $this->getParameters = sfToolkit::stripslashesDeep($_GET);
+    }
+    else
+    {
+      $this->getParameters = $_GET;
+    }
     $this->parameterHolder->add($this->getParameters);
 
     $postParameters = $_POST;
@@ -148,7 +155,14 @@ class sfWebRequest extends sfRequest
       $this->setMethod(self::GET);
     }
 
-    $this->postParameters = get_magic_quotes_gpc() ? sfToolkit::stripslashesDeep($postParameters) : $postParameters;
+    if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc())
+    {
+      $this->postParameters = sfToolkit::stripslashesDeep($postParameters);
+    }
+    else
+    {
+      $this->postParameters = $postParameters;
+    }
     $this->parameterHolder->add($this->postParameters);
 
     if ($formats = $this->getOption('formats'))
