@@ -63,11 +63,12 @@ class sfForm implements ArrayAccess, Iterator, Countable
    */
   public function __construct($defaults = array(), $options = array(), $CSRFSecret = null)
   {
+    $this->validatorSchema = new sfValidatorSchema();
+
     $this->setDefaults($defaults);
     $this->options = $options;
     $this->localCSRFSecret = $CSRFSecret;
 
-    $this->validatorSchema = new sfValidatorSchema();
     $this->widgetSchema    = new sfWidgetFormSchema();
     $this->errorSchema     = new sfValidatorErrorSchema($this->validatorSchema);
 
